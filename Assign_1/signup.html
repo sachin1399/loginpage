@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Signup Page of Cybershoora</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #1b1f3b, #05060f 60%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      filter: blur(140px);
+      opacity: 0.35;
+      animation: float 8s ease-in-out infinite;
+    }
+
+    body::before {
+      background: #7f5af0;
+      top: -80px;
+      left: -80px;
+    }
+
+    body::after {
+      background: #00e5ff;
+      bottom: -80px;
+      right: -80px;
+      animation-delay: 4s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-40px); }
+    }
+
+    .box {
+      width: 100%;
+      max-width: 420px;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(14px);
+      padding: 30px;
+      border-radius: 16px;
+      color: white;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      animation: pop 0.7s ease;
+    }
+
+    @keyframes pop {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      letter-spacing: 2px;
+      color: #eaeaff;
+    }
+
+    .group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      font-size: 13px;
+      margin-bottom: 6px;
+      display: block;
+      color: #cfd3ff;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      transition: all 0.3s ease;
+    }
+
+    input::placeholder {
+      color: #aaa;
+    }
+
+    input:focus {
+      box-shadow: 0 0 0 1px #7f5af0, 0 0 15px rgba(127, 90, 240, 0.8);
+    }
+
+    .password-box {
+      position: relative;
+    }
+
+    .show {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 12px;
+      cursor: pointer;
+      color: #aaa;
+      user-select: none;
+    }
+
+    .show:hover {
+      color: #fff;
+    }
+
+    .error {
+      font-size: 12px;
+      color: #ff6b6b;
+      margin-top: 5px;
+      display: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #7f5af0, #00e5ff);
+      color: black;
+      font-weight: bold;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      position: relative;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    button::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.6), transparent);
+      transform: translateX(-100%);
+    }
+
+    button:hover::after {
+      transform: translateX(100%);
+      transition: 0.6s;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(0, 229, 255, 0.5);
+    }
+
+    button:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    .loader {
+      display: none;
+      margin-left: 10px;
+      width: 16px;
+      height: 16px;
+      border: 2px solid #111;
+      border-top: 2px solid white;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      100% { transform: rotate(360deg); }
+    }
+
+    .link {
+      text-align: center;
+      margin-top: 18px;
+      font-size: 13px;
+    }
+
+    .link a {
+      color: #7f5af0;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="box">
+    <h2>SIGN UP</h2>
+
+    <form id="form">
+
+      <div class="group">
+        <label>Full Name</label>
+        <input type="text" id="name" placeholder="Enter full name">
+        <div class="error" id="nameErr">Name is required</div>
+      </div>
+
+      <div class="group">
+        <label>Email</label>
+        <input type="text" id="email" placeholder="Enter email">
+        <div class="error" id="emailErr">Enter valid email</div>
+      </div>
+
+      <div class="group">
+        <label>Password</label>
+        <div class="password-box">
+          <input type="password" id="password" placeholder="Create password">
+          <span class="show" onclick="togglePass()">SHOW</span>
+        </div>
+        <div class="error" id="passErr">Minimum 6 characters</div>
+      </div>
+
+      <div class="group">
+        <label>Confirm Password</label>
+        <input type="password" id="cpassword" placeholder="Confirm password">
+        <div class="error" id="cpassErr">Passwords do not match</div>
+      </div>
+
+      <button type="submit" id="btn">
+        CREATE ACCOUNT
+        <span class="loader" id="loader"></span>
+      </button>
+
+      <div class="link">
+        Already have an account?
+        <a href="login.html">Login</a>
+      </div>
+
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById("form");
+    const nameInput = document.getElementById("name");
+    const email = document.getElementById("email");
+    const password = document.getElementById("password");
+    const cpassword = document.getElementById("cpassword");
+
+    const nameErr = document.getElementById("nameErr");
+    const emailErr = document.getElementById("emailErr");
+    const passErr = document.getElementById("passErr");
+    const cpassErr = document.getElementById("cpassErr");
+
+    const btn = document.getElementById("btn");
+    const loader = document.getElementById("loader");
+
+    function togglePass() {
+      password.type = password.type === "password" ? "text" : "password";
+    }
+
+    function checkEmail(value) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+    }
+
+    form.addEventListener("submit", function (e) {       //after formmmm submit  
+      e.preventDefault();
+
+      nameErr.style.display = "none";
+      emailErr.style.display = "none";
+      passErr.style.display = "none";
+      cpassErr.style.display = "none";
+
+      let ok = true;
+
+      if (nameInput.value === "") {
+        nameErr.style.display = "block";
+        ok = false;
+      }
+
+      if (email.value === "" || !checkEmail(email.value)) {
+        emailErr.style.display = "block";
+        ok = false;
+      }
+
+      if (password.value.length < 6) {
+        passErr.style.display = "block";
+        ok = false;
+      }
+
+      if (password.value !== cpassword.value || cpassword.value === "") {
+        cpassErr.style.display = "block";
+        ok = false;
+      }
+
+      if (!ok) return;
+
+      btn.disabled = true;
+      loader.style.display = "inline-block";
+
+      setTimeout(() => {
+        alert("Account Created Successfully");
+        btn.disabled = false;
+        loader.style.display = "none";
+        form.reset();
+      }, 2000);
+    });
+  </script>
+
+</body>
+</html>
